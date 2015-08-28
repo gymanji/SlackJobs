@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import re
+from HTMLParser import HTMLParser
 
 
 url = "https://slack.com/jobs"
@@ -15,21 +15,25 @@ else:
 	content = data.text
 
 #Parse out relevant content
+
+class ZHTMLStrip(HTMLParser):
+	def __init__(self):
+		self.reset()
+		self.fed = []
+	def handle_data(self, d):
+		self.fed.append(d)
+	def get_data(self):
+		return ''.join(self.fed)
+
+def strip_tags(html):
+    s = ZHTMLStrip()
+    s.feed(html)
+    return s.get_data() 
+
 soup = BeautifulSoup(content, 'html.parser')
-mydivs = soup.findAll("a", { "class" : "posting-title" })
-items = str(mydivs).split(", ")
+myH4s = str(soup.findAll('h4')).split(", ")
+for i in range(len(myH4s)):
+	print strip_tags(myH4s[i])
 
-finalData = []
-for i in range(len(items)):
-	stripData = re.match('<h4>*?</h4>', items[i])
-	finalData.append(stripData)	
-
-print finalData
-# finalData = []
-# for item in items:
-# 	stripData = re.match('<h4>*', item)
-# 	finalData.append(stripData)
-
-# print finalData
 	
 
