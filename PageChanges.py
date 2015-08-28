@@ -40,7 +40,7 @@ ps = subprocess.Popen(('ls', 'Results/'), stdout=subprocess.PIPE)
 fileCount = subprocess.check_output(('wc', '-l'), stdin=ps.stdout)
 ps.wait()
 
-path = "/Users/zreed/SlackJobs/Results/"
+path = "/Users/Zach/Development/GitHub\ Repos/SlackJobs"
 # files = sorted(os.listdir(path), key=os.path.getctime)
 min = min(os.listdir(path), key=os.path.getctime)
 print min
