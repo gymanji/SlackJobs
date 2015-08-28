@@ -3,6 +3,7 @@ import subprocess
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 import datetime
+import os
 
 url = "https://slack.com/jobs"
 data = requests.get(url)
@@ -39,6 +40,12 @@ ps = subprocess.Popen(('ls', 'Results/'), stdout=subprocess.PIPE)
 fileCount = subprocess.check_output(('wc', '-l'), stdin=ps.stdout)
 ps.wait()
 
+path = "/Users/zreed/SlackJobs/Results/"
+# files = sorted(os.listdir(path), key=os.path.getctime)
+min = min(os.listdir(path), key=os.path.getctime)
+print min
+# print files
+
 def write_file():
 	f = open('Results/results_' + timeStamp + '.txt', 'w+')
 	for i in range(len(myH4s)):
@@ -49,6 +56,8 @@ if int(fileCount) < 2:
 	write_file()
 else:
 	print "too bad bro"
+	# files = []
+	# os.listdir()
 
 
 
