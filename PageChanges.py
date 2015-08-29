@@ -1,15 +1,16 @@
 import requests
 import subprocess
-from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
+from bs4 import BeautifulSoup
 import datetime
 import os
 
+
+# Download page data
 url = "https://slack.com/jobs"
 data = requests.get(url)
 content = ""
 
-# Download page data
 if data.raise_for_status() != None:
 	print "Error encountered"
 	content = data.raise_for_status()
@@ -31,7 +32,6 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data() 
 
-timeStamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 soup = BeautifulSoup(content, 'html.parser')
 myH4s = str(soup.findAll('h4')).split(", ")
 
@@ -40,27 +40,30 @@ ps = subprocess.Popen(('ls', 'Results/'), stdout=subprocess.PIPE)
 fileCount = subprocess.check_output(('wc', '-l'), stdin=ps.stdout)
 ps.wait()
 
-path = "/Users/Zach/Development/GitHub\ Repos/SlackJobs"
-# files = sorted(os.listdir(path), key=os.path.getctime)
-min = min(os.listdir(path), key=os.path.getctime)
-print min
-# print files
+# Determine oldest file in Results Directory
+resultPath = '/Users/Zach/Development/GitHub Repos/SlackJobs/Results/'
+os.chdir(resultPath)
+files = sorted(os.listdir(os.getcwd()), key=os.path.getmtime)
+oldest = files[0]
 
-def write_file():
-	f = open('Results/results_' + timeStamp + '.txt', 'w+')
+def write_file(myH4s):
+	timeStamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+	f = open('Results/result_' + timeStamp + '.txt', 'w')
 	for i in range(len(myH4s)):
 		f.write(strip_tags(myH4s[i] + "\n"))
 	f.close()
 
-if int(fileCount) < 2:
-	write_file()
+
+# print int(fileCount)
+
+# write_file(myH4s)
+
+if int(fileCount) < 6:
+	write_file(myH4s)
 else:
-	print "too bad bro"
-	# files = []
-	# os.listdir()
-
-
-
+	print "file count over 2"
+	os.remove(resultPath + oldest)
+	
 
 
 
