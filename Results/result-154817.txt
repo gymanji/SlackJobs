@@ -15,14 +15,12 @@ Training Manager - San Francisco
  Analytics Developer
 Data Analytics Manager
 Android Engineer
-Application Engineer
 Desktop Application Engineer
 Director of Native Clients
 Engineering Manager - QA
 Engineering Manager - Web
 Frontend Engineer
 iOS Engineer
-Operations Engineer - Dublin
 Operations Engineer - San Francisco
 Software Engineer in Test / Quality Assurance
 Video Streaming Engineer
