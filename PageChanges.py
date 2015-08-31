@@ -79,34 +79,27 @@ b = open(resultPath + files[1]).readlines()
 # print changes
 
 # Send any changes via email
-def send_email(user, pwd, recipient, subject, body):
-	import smtplib
 
-	gmail_user = user
-	gmail_pwd = pwd
-	FROM = user
-	TO = recipient if type(recipient) is list else [recipient]
-	SUBJECT = subject
-	TEXT = body
-
-	message = '\From: %s\nTo: %s\nSubject: %s\n\n%s""' % (FROM, ", ".join(TO), SUBJECT, TEXT)
-
-	try:
-		server = smtplib.SMTP('smtp.gmail.com', 587)
-		server.ehlo()
-		server.starttls()
-		server.login(gmail_user, gmail_pwd)
-		server.close()
-		print 'email successfully sent'
-	except:
-		print 'email failed to send'
-
-
-send_email('', '', '', 'Python Email', 'Email is here!')
-
-
-
-
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+ 
+fromaddr = ''
+toaddr = ''
+msg = MIMEMultipart()
+msg['From'] = fromaddr
+msg['To'] = toaddr
+msg['Subject'] = 'Python Email'
+ 
+body = 'and here is the data!'
+msg.attach(MIMEText(body, 'plain'))
+ 
+server = smtplib.SMTP('smtp.gmail.com', 587)
+server.starttls()
+server.login(fromaddr, '')
+text = msg.as_string()
+server.sendmail(fromaddr, toaddr, text)
+server.quit()
 
 
 
